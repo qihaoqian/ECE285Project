@@ -1,0 +1,15 @@
+ninja
+trimesh
+tensorboardX
+torch
+numpy 
+matplotlib
+PyMCubes
+rich
+dearpygui
+packaging
+scipy
+lpips
+imageio
+torchmetrics
+ruamel.yaml
