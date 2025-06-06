@@ -58,7 +58,7 @@ def extract_fields(bound_min, bound_max, resolution, query_func):
                 for zi, zs in enumerate(Z):
                     xx, yy, zz = custom_meshgrid(xs, ys, zs)
                     pts = torch.cat([xx.reshape(-1, 1), yy.reshape(-1, 1), zz.reshape(-1, 1)], dim=-1)
-                    val = query_func(pts).reshape(len(xs), len(ys), len(zs)).detach().cpu().numpy() # [N, 1] --> [x, y, z]
+                    val = query_func(pts)[0].reshape(len(xs), len(ys), len(zs)).detach().cpu().numpy() # [N, 1] --> [x, y, z]
                     u[xi * N: xi * N + len(xs), yi * N: yi * N + len(ys), zi * N: zi * N + len(zs)] = val
     return u
 
@@ -105,13 +105,8 @@ class Trainer(object):
                  use_checkpoint="latest", # which ckpt to use at init time
                  use_tensorboardX=True, # whether to use tensorboard for logging
                  scheduler_update_every_step=False, # whether to call scheduler.step() after every train step
-                 mape_loss_weight=0, # weight for mape loss
-                 boundary_loss_weight=3e3, # weight for boundary loss
-                 eikonal_loss_surf_weight=1, # weight for eikonal loss on surface
-                 eikonal_loss_space_weight=3, # weight for eikonal loss on space
-                 sign_loss_free_weight=1, # weight for sign loss for free points
-                 sign_loss_occ_weight=1, # weight for sign loss for occupied points
-                 h1=1e-2, # step size for finite difference
+                 data_loss_weight=1, # weight for data loss
+                 reg_loss_weight=1, # weight for regularization loss
     ):
         self.name = name
         self.mute = mute
@@ -132,13 +127,8 @@ class Trainer(object):
         self.scheduler_update_every_step = scheduler_update_every_step
         self.device = device if device is not None else torch.device(f'cuda:{local_rank}' if torch.cuda.is_available() else 'cpu')
         self.console = Console()
-        self.mape_loss_weight = mape_loss_weight
-        self.boundary_loss_weight = boundary_loss_weight
-        self.eikonal_loss_surf_weight = eikonal_loss_surf_weight
-        self.eikonal_loss_space_weight = eikonal_loss_space_weight
-        self.sign_loss_free_weight = sign_loss_free_weight
-        self.sign_loss_occ_weight = sign_loss_occ_weight
-        self.h1 = h1
+        self.data_loss_weight = data_loss_weight
+        self.reg_loss_weight = reg_loss_weight
         self.proj_loss_switch = False
 
         model.to(self.device)
@@ -356,90 +346,24 @@ class Trainer(object):
         X = torch.cat([X_surf, X_occ, X_free], dim=0)
         y = torch.cat([y_surf, y_occ, y_free], dim=0)
         
-        X_space = X[X_surf.shape[0]:]
-        # X.requires_grad_(True)
+        y_pred, z_expand = self.model(X)
         
-        y_pred = self.model(X)
-        surf_pred = y_pred[:X_surf.shape[0]]
-        free_pred = y_pred[X_surf.shape[0]+X_occ.shape[0]:]
-        occ_pred = y_pred[X_surf.shape[0]:X_surf.shape[0]+X_occ.shape[0]]
-        space_pred = y_pred[X_surf.shape[0]:]
+        def deep_sdf_loss_single(pred, sdf_gt, z_expand, clamp_dist=0.1, lambda_z=1e-4):
+            pred_c   = torch.clamp(pred,  -clamp_dist, clamp_dist)
+            target_c = torch.clamp(sdf_gt, -clamp_dist, clamp_dist)
+            data_loss = F.l1_loss(pred_c, target_c)
+            reg_loss  = lambda_z * torch.mean(torch.sum(z_expand**2, dim=1))
+            return data_loss, reg_loss
 
-        def finite_diff_grad(model, X, h1=1e-4):
-            # X: [B, 3] Assume input is 3D coordinates
-            grads = []
-            valid_min = torch.tensor([-1,-1,-1], device=X.device) + h1
-            valid_max = torch.tensor([1,1,1], device=X.device) - h1
-            mask = ((X > valid_min) & (X < valid_max)).all(dim=1)
-            idx = torch.nonzero(mask, as_tuple=False).squeeze(1)  # 返回满足条件的行索引
-            X_safe = X[idx]
-            for i in range(X_safe.shape[1]):
-                # Create a zero tensor with the same shape as X
-                offset = torch.zeros_like(X_safe)
-                offset[:, i] = h1  # Only increase the i-th dimension by a small offset
-                # Calculate SDF values with positive and negative perturbations
-                sdf_plus = model(X_safe + offset)
-                sdf_minus = model(X_safe - offset)
-                # Calculate the gradient in the i-th direction using central difference formula
-                grad_i = (sdf_plus - sdf_minus) / (2 * h1)
-                grads.append(grad_i)  # Adjust the dimension for later concatenation
-            # Concatenate the gradients in each direction to get a [B, 3] gradient tensor
-            grad = torch.cat(grads, dim=-1)
-            return grad , idx
+        data_loss, reg_loss = deep_sdf_loss_single(y_pred, y, z_expand, clamp_dist=0.2, lambda_z=1e-1)
         
         
-        # mape loss
-        if self.mape_loss_weight != 0:
-            difference = (y_pred-y).abs()
-            scale = 1 / (y.abs() + 1e-2)
-            loss_mape = difference * scale
-            loss_mape = loss_mape.mean()
-        else:
-            loss_mape = torch.tensor(0.0, device=y_pred.device)
-            
-        # boundary loss
-        if self.boundary_loss_weight != 0:
-            loss_boundary = (surf_pred-y_surf).abs().mean()
-        else:
-            loss_boundary = torch.tensor(0.0, device=y_pred.device)
+        # lambda_z=1e-4
+        # reg_loss  = lambda_z * torch.mean(torch.sum(z_expand**2, dim=1))
         
-        # sign loss
-        if self.sign_loss_free_weight != 0:
-            loss_sign_free = torch.exp(-1e2 * free_pred).mean()
-        else:
-            loss_sign_free = torch.tensor(0.0, device=y_pred.device)
+        loss = self.data_loss_weight * data_loss + self.reg_loss_weight * reg_loss
         
-        if self.sign_loss_occ_weight != 0:
-            loss_sign_occ = torch.exp(1e2 * occ_pred).mean()
-        else:
-            loss_sign_occ = torch.tensor(0.0, device=y_pred.device)
-        
-        # Eikonal loss
-        if self.eikonal_loss_surf_weight != 0 and self.eikonal_loss_space_weight != 0:
-            grad_surf, grad_surf_idx = finite_diff_grad(self.model, X_surf, h1=self.h1)
-            grad_occ, grad_occ_idx = finite_diff_grad(self.model, X_occ, h1=self.h1)
-            grad_free, grad_free_idx = finite_diff_grad(self.model, X_free, h1=self.h1)
-            loss_eikonal_surf = (grad_surf.norm(dim=1) - 1).abs().mean()
-            grad_space = torch.cat([grad_occ, grad_free], dim=0)  # [B, 3]
-            grad_space_idx = torch.cat([grad_occ_idx, grad_free_idx], dim=0)  # [B]
-            loss_eikonal_space = (grad_space.norm(dim=1) - 1).abs().mean()
-        else:
-            loss_eikonal_surf = torch.tensor(0.0, device=y_pred.device)
-            loss_eikonal_space = torch.tensor(0.0, device=y_pred.device)
-            
-        
-        # Compute the weighted losses
-        weighted_loss_mape = loss_mape * self.mape_loss_weight
-        weighted_loss_boundary = loss_boundary * self.boundary_loss_weight
-        weighted_loss_eikonal_surf = loss_eikonal_surf * self.eikonal_loss_surf_weight
-        weighted_loss_eikonal_space = loss_eikonal_space * self.eikonal_loss_space_weight
-        weighted_loss_sign_free = loss_sign_free * self.sign_loss_free_weight
-        weighted_loss_sign_occ = loss_sign_occ * self.sign_loss_occ_weight
-
-        # Sum up the total loss
-        loss = weighted_loss_mape + weighted_loss_boundary + weighted_loss_eikonal_surf + weighted_loss_eikonal_space + weighted_loss_sign_free+ loss_sign_occ
-
-        return y_pred, y, loss, loss_mape, loss_boundary, loss_eikonal_surf, loss_eikonal_space, loss_sign_free, loss_sign_occ
+        return y_pred, y, loss, data_loss, reg_loss
 
     def eval_step(self, data):
         return self.train_step(data)
@@ -629,7 +553,7 @@ class Trainer(object):
             self.optimizer.zero_grad()
 
             with torch.cuda.amp.autocast(enabled=self.fp16):
-                preds, truths, loss, loss_mape, loss_boundary, loss_eikonal_surf, loss_eikonal_space, loss_sign_free, loss_sign_occ = self.train_step(data)
+                preds, truths, loss, loss_data, loss_reg = self.train_step(data)
             self.scaler.scale(loss).backward()
             self.scaler.step(self.optimizer)
             self.scaler.update()
@@ -651,12 +575,8 @@ class Trainer(object):
                 if self.use_tensorboardX:
                     self.writer.add_scalar("train/loss", loss_val, self.global_step)
                     self.writer.add_scalar("train/lr", self.optimizer.param_groups[0]['lr'], self.global_step)
-                    self.writer.add_scalar("train/loss_mape", loss_mape.item(), self.global_step)
-                    self.writer.add_scalar("train/loss_boundary", loss_boundary.item(), self.global_step)
-                    self.writer.add_scalar("train/loss_eikonal_surf", loss_eikonal_surf.item(), self.global_step)
-                    self.writer.add_scalar("train/loss_eikonal_space", loss_eikonal_space.item(), self.global_step)
-                    self.writer.add_scalar("train/loss_sign_free", loss_sign_free.item(), self.global_step)
-                    self.writer.add_scalar("train/loss_sign_occ", loss_sign_occ.item(), self.global_step)
+                    self.writer.add_scalar("train/data_loss", loss_data.item(), self.global_step)
+                    self.writer.add_scalar("train/reg_loss", loss_reg.item(), self.global_step)
 
 
                 if self.scheduler_update_every_step:

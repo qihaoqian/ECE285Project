@@ -6,7 +6,7 @@ from typing import Union
 @dataclass
 class TrainerConfig(ConfigABC):
     name : str = "ngp"  # name of the experiment
-    eval_interval : int = 5 # interval for evaluation
+    eval_interval : int = 1 # interval for evaluation
     use_checkpoint : str = "latest" # checkpoint to use for evaluation
     workspace : str = "workspace" # workspace directory
     use_tensorboardX : bool = True # use tensorboard for logging
@@ -14,17 +14,18 @@ class TrainerConfig(ConfigABC):
     local_rank : int = 0 # local rank for distributed training
     world_size : int = 1 # world size for distributed training
     ema_decay : float = 0.95 # decay for exponential moving average
+    mape_loss_weight : int = 100 # weight for MAPE loss
     boundary_loss_weight : int = 350 # weight for boundary loss
     eikonal_loss_surf_weight: int = 1 # weight for eikonal loss on surface
     eikonal_loss_space_weight: int = 3
     sign_loss_free_weight: int = 1 # weight for free points sign loss
     sign_loss_occ_weight: int = 1 # weight for occupied points sign loss
     h1: float = 1e-2 # step size for finite difference
-    resolution: int = 2 # resolution for output mesh
+    resolution: int = 256 # resolution for output mesh
 
 @dataclass
 class DataConfig(ConfigABC):
-    dataset_path: str = 'data/armadillo.obj'
+    dataset_path: str = 'data/'
     train_size: int = 100
     valid_size: int = 1
     num_samples_surf: int = 20000
@@ -78,5 +79,5 @@ class Config(ConfigABC):
     reg_grid: RegularGridConfig = field(default_factory=RegularGridConfig)
     seed: int = 0
     test: bool = False
-    epochs: int = 30
+    epochs: int = 10
     

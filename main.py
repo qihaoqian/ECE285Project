@@ -1,5 +1,5 @@
 import torch
-from config.config import Config
+from config.config_ngp import Config
 
 from hotspot.utils import *
 
@@ -72,6 +72,7 @@ if __name__ == '__main__':
             eval_interval=cfg.trainer.eval_interval,
             ema_decay=cfg.trainer.ema_decay,
             use_tensorboardX=cfg.trainer.use_tensorboardX,
+            mape_loss_weight=cfg.trainer.mape_loss_weight,
             boundary_loss_weight=cfg.trainer.boundary_loss_weight,
             eikonal_loss_surf_weight=cfg.trainer.eikonal_loss_surf_weight,
             eikonal_loss_space_weight=cfg.trainer.eikonal_loss_space_weight,
