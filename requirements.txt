@@ -13,3 +13,4 @@ lpips
 imageio
 torchmetrics
 ruamel.yaml
+pyrender

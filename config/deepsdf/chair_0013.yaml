@@ -6,13 +6,13 @@ trainer:
     use_checkpoint: latest
     workspace: workspace/deepsdf/chair_0013
     use_tensorboardX: true
-    max_keep_ckpt: 2
+    max_keep_ckpt: 30
     local_rank: 0
     world_size: 1
     ema_decay: 0.95
-    data_loss_weight: 100
+    data_loss_weight: 1
     reg_loss_weight: 1
-    resolution: 256
+    resolution: 512
 data:
     identifier: config.config_deepsdf.DataConfig
     dataset_path: data/ModelNet10_preprocessed/chair/chair_0013.obj

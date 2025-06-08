@@ -1,0 +1,39 @@
+identifier: config.config_deepsdf.Config
+trainer:
+    identifier: config.config_deepsdf.TrainerConfig
+    name: deepsdf
+    eval_interval: 1
+    use_checkpoint: latest
+    workspace: workspace/deepsdf/monitor_0249
+    use_tensorboardX: true
+    max_keep_ckpt: 30
+    local_rank: 0
+    world_size: 1
+    ema_decay: 0.95
+    data_loss_weight: 1
+    reg_loss_weight: 1
+    resolution: 512
+data:
+    identifier: config.config_deepsdf.DataConfig
+    dataset_path: data/ModelNet10_preprocessed/monitor/monitor_0249.obj
+    train_size: 100
+    valid_size: 1
+    num_samples_surf: 20000
+    num_samples_space: 10000
+optimizer:
+    identifier: config.config_deepsdf.OptimizerConfig
+    type: Adam
+    lr: 0.0001
+    weight_decay: 1e-06
+    betas:
+        - 0.9
+        - 0.999
+    eps: 1e-15
+scheduler:
+    identifier: config.config_deepsdf.SchedulerConfig
+    type: StepLR
+    step_size: 10
+    gamma: 1
+seed: 0
+test: false
+epochs: 30

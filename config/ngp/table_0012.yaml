@@ -1,0 +1,73 @@
+identifier: config.config_ngp.Config
+trainer:
+    identifier: config.config_ngp.TrainerConfig
+    name: ngp
+    eval_interval: 1
+    use_checkpoint: latest
+    workspace: workspace/ngp/table_0012
+    use_tensorboardX: true
+    max_keep_ckpt: 20
+    local_rank: 0
+    world_size: 1
+    ema_decay: 0.95
+    mape_loss_weight: 100
+    boundary_loss_weight: 0
+    eikonal_loss_surf_weight: 1
+    eikonal_loss_space_weight: 3
+    sign_loss_free_weight: 0
+    sign_loss_occ_weight: 0
+    h1: 0.01
+    resolution: 512
+data:
+    identifier: config.config_ngp.DataConfig
+    dataset_path: data/ModelNet10_preprocessed/table/table_0012.obj
+    train_size: 100
+    valid_size: 1
+    num_samples_surf: 20000
+    num_samples_space: 10000
+optimizer:
+    identifier: config.config_ngp.OptimizerConfig
+    type: Adam
+    lr: 0.001
+    weight_decay: 1e-06
+    betas:
+        - 0.9
+        - 0.999
+    eps: 1e-15
+scheduler:
+    identifier: config.config_ngp.SchedulerConfig
+    type: StepLR
+    step_size: 10
+    gamma: 1
+model:
+    identifier: config.config_ngp.ModelConfig
+    encoding: hashgrid
+    num_layers: 3
+    hidden_dim: 64
+    sphere_radius: 1.6
+    sphere_scale: 1.0
+    use_sphere_post_processing: True
+hash_grid:
+    identifier: config.config_ngp.HashGridConfig
+    num_levels: 8
+    base_resolution: 16
+    desired_resolution: 2048
+reg_grid:
+    identifier: config.config_ngp.RegularGridConfig
+    feature_dim: 32
+    grid_dim: 3
+    grid_min:
+        - -1
+        - -1
+        - -1
+    grid_max:
+        - 1
+        - 1
+        - 1
+    grid_res:
+        - 0.05
+        - 0.05
+        - 0.05
+seed: 0
+test: false
+epochs: 20

@@ -6,7 +6,7 @@ trainer:
     use_checkpoint: latest
     workspace: workspace/ngp/chair_0013
     use_tensorboardX: true
-    max_keep_ckpt: 2
+    max_keep_ckpt: 20
     local_rank: 0
     world_size: 1
     ema_decay: 0.95
@@ -17,7 +17,7 @@ trainer:
     sign_loss_free_weight: 0
     sign_loss_occ_weight: 0
     h1: 0.01
-    resolution: 256
+    resolution: 512
 data:
     identifier: config.config_ngp.DataConfig
     dataset_path: data/ModelNet10_preprocessed/chair/chair_0013.obj
@@ -42,11 +42,11 @@ scheduler:
 model:
     identifier: config.config_ngp.ModelConfig
     encoding: hashgrid
-    num_layers: 4
-    hidden_dim: 128
+    num_layers: 3
+    hidden_dim: 64
     sphere_radius: 1.6
     sphere_scale: 1.0
-    use_sphere_post_processing: false
+    use_sphere_post_processing: True
 hash_grid:
     identifier: config.config_ngp.HashGridConfig
     num_levels: 8
@@ -70,4 +70,4 @@ reg_grid:
         - 0.05
 seed: 0
 test: false
-epochs: 10
+epochs: 20

@@ -486,7 +486,7 @@ class Trainer(object):
 
             if self.epoch % self.eval_interval == 0:
                 # self.evaluate_one_epoch(valid_loader)
-                self.save_mesh(resolution=128)
+                self.save_mesh(resolution=256)
                 self.save_checkpoint(full=False, best=True)
 
         if self.use_tensorboardX and self.local_rank == 0:

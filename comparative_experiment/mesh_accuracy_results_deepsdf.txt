@@ -1,0 +1,286 @@
+Predicted Mesh: workspace/deepsdf/monitor_0249/results/output.ply
+Chamfer Distance: 0.000416
+Hausdorff Distance: 0.189269
+SDF Value Loss: 0.220785
+SDF Value Loss of occupied area: 0.229336
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/monitor_0403/results/output.ply
+Chamfer Distance: 0.000118
+Hausdorff Distance: 0.244146
+SDF Value Loss: 0.173872
+SDF Value Loss of occupied area: 0.203087
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/monitor_0334/results/output.ply
+Chamfer Distance: 0.000251
+Hausdorff Distance: 0.031678
+SDF Value Loss: 0.194478
+SDF Value Loss of occupied area: 0.114419
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/monitor_0160/results/output.ply
+Chamfer Distance: 0.000040
+Hausdorff Distance: 0.154779
+SDF Value Loss: 0.169301
+SDF Value Loss of occupied area: 0.252261
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/monitor_0292/results/output.ply
+Chamfer Distance: 0.000101
+Hausdorff Distance: 0.092781
+SDF Value Loss: 0.161466
+SDF Value Loss of occupied area: 0.258758
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/sofa_0227/results/output.ply
+Chamfer Distance: 0.000025
+Hausdorff Distance: 0.053876
+SDF Value Loss: 0.136170
+SDF Value Loss of occupied area: 0.226845
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/sofa_0038/results/output.ply
+Chamfer Distance: 0.000400
+Hausdorff Distance: 0.083239
+SDF Value Loss: 0.151112
+SDF Value Loss of occupied area: 0.107805
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/sofa_0379/results/output.ply
+Chamfer Distance: 0.000053
+Hausdorff Distance: 0.113372
+SDF Value Loss: 0.156287
+SDF Value Loss of occupied area: 0.236056
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/sofa_0409/results/output.ply
+Chamfer Distance: 0.000471
+Hausdorff Distance: 0.102894
+SDF Value Loss: 0.203724
+SDF Value Loss of occupied area: 0.240686
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/sofa_0515/results/output.ply
+Chamfer Distance: 0.000074
+Hausdorff Distance: 0.060299
+SDF Value Loss: 0.189287
+SDF Value Loss of occupied area: 0.148512
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/bathtub_0081/results/output.ply
+Chamfer Distance: 0.000030
+Hausdorff Distance: 0.045444
+SDF Value Loss: 0.256494
+SDF Value Loss of occupied area: 0.256164
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/bathtub_0041/results/output.ply
+Chamfer Distance: 0.000027
+Hausdorff Distance: 0.013260
+SDF Value Loss: 0.139881
+SDF Value Loss of occupied area: 0.194153
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/bathtub_0080/results/output.ply
+Chamfer Distance: 0.000127
+Hausdorff Distance: 0.666397
+SDF Value Loss: 0.162103
+SDF Value Loss of occupied area: 0.300947
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/bathtub_0025/results/output.ply
+Chamfer Distance: 0.000032
+Hausdorff Distance: 0.017003
+SDF Value Loss: 0.176380
+SDF Value Loss of occupied area: 0.305607
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/bed_0248/results/output.ply
+Chamfer Distance: 0.000127
+Hausdorff Distance: 0.111352
+SDF Value Loss: 0.207374
+SDF Value Loss of occupied area: 0.319662
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/bed_0056/results/output.ply
+Chamfer Distance: 0.000061
+Hausdorff Distance: 0.491568
+SDF Value Loss: 0.182487
+SDF Value Loss of occupied area: 0.290430
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/bed_0264/results/output.ply
+Chamfer Distance: 0.000109
+Hausdorff Distance: 0.102896
+SDF Value Loss: 0.197359
+SDF Value Loss of occupied area: 0.343847
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/bed_0488/results/output.ply
+Chamfer Distance: 0.000338
+Hausdorff Distance: 0.247054
+SDF Value Loss: 0.240733
+SDF Value Loss of occupied area: 0.350572
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/bed_0198/results/output.ply
+Chamfer Distance: 0.000043
+Hausdorff Distance: 0.099354
+SDF Value Loss: 0.158768
+SDF Value Loss of occupied area: 0.335597
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/night_stand_0193/results/output.ply
+Chamfer Distance: 0.000215
+Hausdorff Distance: 0.243803
+SDF Value Loss: 0.215226
+SDF Value Loss of occupied area: 0.374394
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/night_stand_0146/results/output.ply
+Chamfer Distance: 0.000107
+Hausdorff Distance: 0.369207
+SDF Value Loss: 0.260610
+SDF Value Loss of occupied area: 0.459738
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/night_stand_0165/results/output.ply
+Chamfer Distance: 0.000040
+Hausdorff Distance: 0.055773
+SDF Value Loss: 0.200445
+SDF Value Loss of occupied area: 0.362008
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/desk_0019/results/output.ply
+Chamfer Distance: 0.000125
+Hausdorff Distance: 0.424978
+SDF Value Loss: 0.191805
+SDF Value Loss of occupied area: 0.399623
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/desk_0072/results/output.ply
+Chamfer Distance: 0.004001
+Hausdorff Distance: 0.525877
+SDF Value Loss: 0.216798
+SDF Value Loss of occupied area: 0.343983
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/desk_0022/results/output.ply
+Chamfer Distance: 0.000051
+Hausdorff Distance: 0.112606
+SDF Value Loss: 0.178302
+SDF Value Loss of occupied area: 0.327611
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/desk_0032/results/output.ply
+Chamfer Distance: 0.000028
+Hausdorff Distance: 0.013700
+SDF Value Loss: 0.156448
+SDF Value Loss of occupied area: 0.236114
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/desk_0115/results/output.ply
+Chamfer Distance: 0.000028
+Hausdorff Distance: 0.012108
+SDF Value Loss: 0.163360
+SDF Value Loss of occupied area: 0.238301
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/chair_0533/results/output.ply
+Chamfer Distance: 0.000019
+Hausdorff Distance: 0.016657
+SDF Value Loss: 0.113814
+SDF Value Loss of occupied area: 0.139795
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/chair_0013/results/output.ply
+Chamfer Distance: 0.000126
+Hausdorff Distance: 0.171093
+SDF Value Loss: 0.135056
+SDF Value Loss of occupied area: 0.232782
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/chair_0039/results/output.ply
+Chamfer Distance: 0.000030
+Hausdorff Distance: 0.062474
+SDF Value Loss: 0.132546
+SDF Value Loss of occupied area: 0.200389
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/chair_0680/results/output.ply
+Chamfer Distance: 0.000043
+Hausdorff Distance: 0.091995
+SDF Value Loss: 0.141782
+SDF Value Loss of occupied area: 0.253367
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/chair_0458/results/output.ply
+Chamfer Distance: 0.000016
+Hausdorff Distance: 0.017161
+SDF Value Loss: 0.122156
+SDF Value Loss of occupied area: 0.166364
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/dresser_0039/results/output.ply
+Chamfer Distance: 0.000039
+Hausdorff Distance: 0.179212
+SDF Value Loss: 0.233936
+SDF Value Loss of occupied area: 0.368000
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/dresser_0184/results/output.ply
+Chamfer Distance: 0.000048
+Hausdorff Distance: 0.219475
+SDF Value Loss: 0.183656
+SDF Value Loss of occupied area: 0.315608
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/dresser_0013/results/output.ply
+Chamfer Distance: 0.000033
+Hausdorff Distance: 0.040260
+SDF Value Loss: 0.225422
+SDF Value Loss of occupied area: 0.314063
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/dresser_0114/results/output.ply
+Chamfer Distance: 0.000038
+Hausdorff Distance: 0.113262
+SDF Value Loss: 0.234363
+SDF Value Loss of occupied area: 0.382142
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/dresser_0191/results/output.ply
+Chamfer Distance: 0.000261
+Hausdorff Distance: 0.188106
+SDF Value Loss: 0.223532
+SDF Value Loss of occupied area: 0.379635
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/table_0246/results/output.ply
+Chamfer Distance: 0.000715
+Hausdorff Distance: 0.121744
+SDF Value Loss: 0.134001
+SDF Value Loss of occupied area: 0.293268
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/table_0321/results/output.ply
+Chamfer Distance: 0.000132
+Hausdorff Distance: 0.584495
+SDF Value Loss: 0.187793
+SDF Value Loss of occupied area: 0.667538
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/table_0012/results/output.ply
+Chamfer Distance: 0.000030
+Hausdorff Distance: 0.011912
+SDF Value Loss: 0.125964
+SDF Value Loss of occupied area: 0.163269
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/table_0279/results/output.ply
+Chamfer Distance: 0.000166
+Hausdorff Distance: 0.112401
+SDF Value Loss: 0.173517
+SDF Value Loss of occupied area: 0.263097
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/table_0167/results/output.ply
+Chamfer Distance: 0.000017
+Hausdorff Distance: 0.009868
+SDF Value Loss: 0.144522
+SDF Value Loss of occupied area: 0.312029
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/toilet_0219/results/output.ply
+Chamfer Distance: 0.000134
+Hausdorff Distance: 0.058241
+SDF Value Loss: 0.145265
+SDF Value Loss of occupied area: 0.153502
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/toilet_0184/results/output.ply
+Chamfer Distance: 0.000027
+Hausdorff Distance: 0.021060
+SDF Value Loss: 0.132807
+SDF Value Loss of occupied area: 0.122796
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/toilet_0291/results/output.ply
+Chamfer Distance: 0.000047
+Hausdorff Distance: 0.028544
+SDF Value Loss: 0.137688
+SDF Value Loss of occupied area: 0.160414
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/toilet_0185/results/output.ply
+Chamfer Distance: 0.000026
+Hausdorff Distance: 0.012150
+SDF Value Loss: 0.129616
+SDF Value Loss of occupied area: 0.151271
+----------------------------------------
+Predicted Mesh: workspace/deepsdf/toilet_0029/results/output.ply
+Chamfer Distance: 0.000047
+Hausdorff Distance: 0.068443
+SDF Value Loss: 0.135820
+SDF Value Loss of occupied area: 0.206184
+----------------------------------------
+Chamfer Distance 平均值: 0.000127
+Hausdorff Distance 平均值: 0.156
+SDF Value Loss 平均值: 0.178
+SDF Value Loss of occupied area 平均值: 0.267

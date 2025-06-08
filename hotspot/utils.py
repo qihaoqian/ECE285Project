@@ -368,6 +368,7 @@ class Trainer(object):
         def finite_diff_grad(model, X, h1=1e-4):
             # X: [B, 3] Assume input is 3D coordinates
             grads = []
+            #print(X.shape, h1)
             valid_min = torch.tensor([-1,-1,-1], device=X.device) + h1
             valid_max = torch.tensor([1,1,1], device=X.device) - h1
             mask = ((X > valid_min) & (X < valid_max)).all(dim=1)
@@ -391,7 +392,7 @@ class Trainer(object):
         # mape loss
         if self.mape_loss_weight != 0:
             difference = (y_pred-y).abs()
-            scale = 1 / (y.abs() + 1e-2)
+            scale = 1 / (y.abs() + 1e-3)
             loss_mape = difference * scale
             loss_mape = loss_mape.mean()
         else:
@@ -417,11 +418,10 @@ class Trainer(object):
         # Eikonal loss
         if self.eikonal_loss_surf_weight != 0 and self.eikonal_loss_space_weight != 0:
             grad_surf, grad_surf_idx = finite_diff_grad(self.model, X_surf, h1=self.h1)
-            grad_occ, grad_occ_idx = finite_diff_grad(self.model, X_occ, h1=self.h1)
-            grad_free, grad_free_idx = finite_diff_grad(self.model, X_free, h1=self.h1)
+            X_space = torch.cat([X_occ, X_free], dim=0)
+            print(X_space.shape)
+            grad_space, grad_space_idx = finite_diff_grad(self.model, X_space, h1=self.h1)
             loss_eikonal_surf = (grad_surf.norm(dim=1) - 1).abs().mean()
-            grad_space = torch.cat([grad_occ, grad_free], dim=0)  # [B, 3]
-            grad_space_idx = torch.cat([grad_occ_idx, grad_free_idx], dim=0)  # [B]
             loss_eikonal_space = (grad_space.norm(dim=1) - 1).abs().mean()
         else:
             loss_eikonal_surf = torch.tensor(0.0, device=y_pred.device)
@@ -532,7 +532,7 @@ class Trainer(object):
         get_sdfs_cross_section(self, bounds_min, bounds_max, resolution, query_func)
         vertices, triangles = extract_geometry(bounds_min, bounds_max, resolution=resolution, threshold=0, query_func=query_func)
         print(f"==> vertices: {vertices.shape}, triangles: {triangles.shape}")
-        if triangles.shape[0] == 0 or triangles.shape[0] > 1000000:
+        if triangles.shape[0] == 0 or triangles.shape[0] > 2000000:
             self.log(f"==> No valid mesh extracted, skipping save.")
             return
 
@@ -562,7 +562,7 @@ class Trainer(object):
 
             if self.epoch % self.eval_interval == 0:
                 # self.evaluate_one_epoch(valid_loader)
-                self.save_mesh(resolution=128)
+                self.save_mesh(resolution=256)
                 self.save_checkpoint(full=False, best=True)
 
         if self.use_tensorboardX and self.local_rank == 0:
