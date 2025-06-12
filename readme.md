@@ -1,49 +1,67 @@
 # torch-ngp-hotspot
 
-### Install with pip
+This is a PyTorch-based implementation of NeRF (Neural Radiance Fields) and SDF (Signed Distance Functions) project, supporting various 3D reconstruction and rendering functionalities.
+
+## Project Structure
+
+```
+.
+├── config/                 # Configuration directory
+│   ├── ngp/               # NGP related configurations
+│   ├── deepsdf/           # DeepSDF related configurations
+│   └── generate_configs.py # Configuration generation script
+├── data/                  # Dataset directory
+├── gridencoder/          # Grid encoder implementation
+├── sdf/                  # SDF related implementation
+├── hotspot/              # Hotspot related implementation
+├── deepsdf/              # DeepSDF related implementation
+├── main.py               # NGP main program
+└── main_deepsdf.py       # DeepSDF main program
+```
+
+## Installation
+
+1. Install dependencies:
 ```bash
 pip install -r requirements.txt
+```
 
-### Build extension 
-# install manually, here is an example:
+2. Build extensions:
+```bash
+# Build grid encoder
 cd gridencoder
-python setup.py build_ext --inplace # build ext only, do not install (only can be used in the parent directory)
-pip install . # install to python path (you still need the raymarching/ folder, since this only install the built extension.)
-cd sdf
+python setup.py build_ext --inplace
+pip install .
+
+# Build SDF extension
+cd ../sdf
 pip install .
 ```
 
+## Dataset
 
+ModelNet10
 
-# Usage
+## Usage
 
-We use the same data format as instant-ngp, e.g., [armadillo](https://github.com/NVlabs/instant-ngp/blob/master/data/sdf/armadillo.obj) and [fox](https://github.com/NVlabs/instant-ngp/tree/master/data/nerf/fox). 
-Please download and put them under `./data`.
-
-We also support self-captured dataset and converting other formats (e.g., LLFF, Tanks&Temples, Mip-NeRF 360) to the nerf-compatible format, with details in the following code block.
-
-<details>
-  <summary> Supported datasets </summary>
-
-  * [nerf_synthetic](https://drive.google.com/drive/folders/128yBriW1IG_3NJ5Rp7APSTZsJqdJdfc1) 
-
-  * [Tanks&Temples](https://dl.fbaipublicfiles.com/nsvf/dataset/TanksAndTemple.zip): [[conversion script]](./scripts/tanks2nerf.py)
-
-  * [LLFF](https://drive.google.com/drive/folders/14boI-o5hGO9srnWaaogTU5_ji7wkX2S7): [[conversion script]](./scripts/llff2nerf.py)
-
-  * [Mip-NeRF 360](http://storage.googleapis.com/gresearch/refraw360/360_v2.zip): [[conversion script]](./scripts/llff2nerf.py)
-
-  * (dynamic) [D-NeRF](https://www.dropbox.com/s/0bf6fl0ye2vz3vr/data.zip?dl=0)
-
-  * (dynamic) [Hyper-NeRF](https://github.com/google/hypernerf/releases/tag/v0.1): [[conversion script]](./scripts/hyper2nerf.py)
-
-</details>
-
-First time running will take some time to compile the CUDA extensions.
-
+### NGP Training
 ```bash
-### Instant-ngp hotspot
-python main.py --config config/hotspot.yaml #--trainer.eval-interval 3 --optimizer.lr 0.0001
+python main.py --config config/hotspot.yaml
 ```
 
+### DeepSDF Training
+```bash
+python main_deepsdf.py --config config/deepsdf.yaml
+```
 
+## Notes
+
+1. First run will require CUDA extension compilation, which may take some time
+2. Please ensure datasets are placed in the `./data` directory
+3. Supported data formats are the same as instant-ngp, such as [armadillo](https://github.com/NVlabs/instant-ngp/blob/master/data/sdf/armadillo.obj) and [fox](https://github.com/NVlabs/instant-ngp/tree/master/data/nerf/fox)
+
+## Experiment Logs
+
+The project includes training logs:
+- `train_ngp.log`: NGP training log
+- `train_deepsdf.log`: DeepSDF training log
